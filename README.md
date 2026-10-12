@@ -14,16 +14,24 @@
 ---
 ## 1.奇异的项目大小
 诚然笔者分析项目的前提是获得这个仓库的src，尽管笔者的网络是比较好的，但clone项目仍然花费我3分钟时间，甚至部分群友的clone原地爆炸难以clone
+
 ![clone爆炸图片1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/clonebomb1.png)
 ![clone爆炸图片2](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/clonebomb2.png)
+
 便如上图所示，为什么呢？
+
 ![压缩后大小](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/zip.png)
+
 是的，你没看错，即使是压缩过后的项目文件大小也高达**417MB**，这显然是不正常的，我难以想象一种什么样的mc启动器项目可以做到如此竟然的大小
+
 ![解压后大小](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/unzip.png)
+
 解压后的文件高达**615MB**的大小还不是结果，将其导入后工作区大小竟然高达**1.1GB**
 ### 原因
 经过对项目内所有文件的查询，罪魁祸首是根目录下的docs文件夹
+
 ![docs大小](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/docs.png)
+
 这个docs文件夹占据了高达595MB的大小，99%的空间被docs占用
 
 既然这个docs这么大一定有用吧？
