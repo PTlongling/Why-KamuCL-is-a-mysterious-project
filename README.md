@@ -69,7 +69,9 @@ scripts/*.log        # ← 被 *.log 覆盖
 
 ## 代码问题
 ### 1.莫名其妙的彩蛋
+
 ![菜单代码实现](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/caidan.png)
+
 相信各位不难看出这段代码的可读性算是较为低的，我为各位解释一下
 
 **mascotAudio.ts** 里，那个拍击音效不是音频文件，是用代码实时合成的：
@@ -82,9 +84,13 @@ scripts/*.log        # ← 被 *.log 覆盖
 > Original palm slap: a dry broadband crack, short skin-like body, no sample library.
 
 ### 2.默认皮肤的绘制
+
 ![首页皮肤](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/skin.png)
+
 这是KamuCL的首页中的一个皮肤示意（可见是一个默认皮肤），那么好，请各位看下面的代码
+
 ![代码皮肤](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/writeskin.png)
+
 没错，这个皮肤是用rect一个个像素点画出来的(PS:力大砖飞的来了),我不明白是否为脑瘫AI不会使用图片实现或是某种奇特想法导致的问题（无意义的行为）
 
 `const skin = 0xd3a582, shade = 0xbf8b6c, hair = 0x49382f
@@ -110,34 +116,52 @@ PS:我并不明白的一个毫无意义的操作
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/statcheck.png)
 ### 2.不会向溜溜梅表达hover
 很显然作者不知为何无法表达"hover"这个词所以他一辈子都无法向他的溜溜梅AI描述这个问题，这个UI里的几乎所有按钮的hover判定都有问题，要不就是上半部分无法选中要不就是某一侧无法选中.
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/hover.gif)
+
 ### 3.错误日志
 为什么没选择一个账号是一个错误还可能需要导出日志，很可能是作者贯彻了某种极繁主义精神认为能用异常解决的问题就绝对不需要控制流以便显得自己的项目有很NB顶尖的异常处理。
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/errorstart.png)
+
 ### 4.奇异登陆系统
 最令人蒙古的是虽然项目自身是一个Electron编写的狗屎，并且文件高达100MiB甚至90MiB，并且包含完整的Blink、V8、Skia、Angle意味着可以渲染世界上任何一个能在前端渲染的东西比如MicrosoftVscode甚至是Firefox，但是作者及其高级的大脑还是决定给登录做成了你需要手动打开外置浏览器因为他不仅不会利用程序内的浏览器来渲染，甚至都不会自动帮你拉起一下浏览器，
 
 **甚至作者都懒得自己去申请一个ClientID直接窃取了Prism Launcher的ClientID。（这是后话，稍后我会提到此问题）**
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/useprism.png)
+
 ### 5.奇异UI
 我也难以描述UI问题了，可能是作者不太清楚outline的使用吧
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/uiprob.png)
 
 ## 道德方面的问题
 **此处讲述一些严重的问题**
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/prism.png)
+
 相信不少人能发现问题，为何我在KamuCL登录提示的是Prism的登录呢？
 # 原因正是**KAMUCL未经Prism Launcher授权直接复制该Client ID并用于自身的OAuth2.0流程**
+
 因此这违反了[《微软开发者身份平台使用条款》](https://learn.microsoft.com/es-es/legal/microsoft-identity-platform/terms-of-use)
+
 
 事情经过：
 Prism Launcher在公开仓库中开源了其Azure应用注册的Client ID`c36a9fb6-4f2a-41ff-90bd-ae7cc92031eb`
+
 KAMUCL未经Prism Launcher授权直接复制该Client ID并用于[自身的OAuth2.0流程](https://github.com/kamubaba-i/KAMUCL/blob/main/src/shared/types.ts#L978)
+
 KAMUCL使用该Client ID向`https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode发起设备代码请求`
+
 KAMUCL使用该Client ID轮询`https://login.microsoftonline.com/consumers/oauth2/v2.0/token获取MAT与MRT`
+
 KAMUCL继续以Prism Launcher的身份完成Xbox Live/XSTS/Minecraft登录链并最终向用户提供其自己的Launcher
+
 用户在授权页面上看到的是Prism Launcher的应用名称而非KAMUCL
+
 用户以为自己在授权给Prism Launcher而实际Token被KAMUCL获取
+
 [自己去注册一个ClientID很难吗?](https://portal.azure.com/)
 
 所违反的条款详情：
@@ -149,6 +173,7 @@ You may not select a Display Name that impersonates someone else, is or may be i
 You may not otherwise assign the Application ID without Microsoft’s prior written consent.
 be free from any malicious, deceptive or unlawful code or program or any activities that violate applicable law, regulations, government orders or decrees;
 You must not collect or transfer any User’s personal information or data in a misleading, illegal, unauthorized or unfair way.
+
 这已经是极为严重的问题了，笔者在登陆时甚至怀疑是否遭遇了token小偷
 
 ## 总结
@@ -156,7 +181,9 @@ You must not collect or transfer any User’s personal information or data in a 
 
 # 附录
 ## 值得庆幸的是，[GongSunFangYun](https://github.com/GongSunFangYun)在Prism的不和谐频道发布了此内容，引起两位contributior惊呼：
+
 ![1](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/report.png)
+
 **老实说我觉得微软不会鸟这个事情
 但是我没法理解这群byd为什么非得用我们的cid
 直接用官启的cid跑oauth2.0都行
@@ -165,7 +192,9 @@ modrinth就是那么做的
 你要是告诉我他们的家在哪我给他们全家绑过来批斗**
 
 ## 不论如何，我始终坚持不论微软是否在意此事，都不应成为KamuCL盗窃其他客户端的Oauthid的理由，尽管可以辩解为AI自己的行径，但这仍然是KamuCL的开发者没有做到监管的责任
+
 ![agentmd](https://v6.gh-proxy.org/https://github.com/PTlongling/Why-KamuCL-is-a-mysterious-project/blob/main/pic/agentmd.png)
+
 甚至在此项目的Agent.md文件中明晃晃出现了
 > 用户已明确授权：每批修改完成后，默认完成验证、打包，并更新到 https://github.com/kamubaba-i/KAMUCL ，无需再次询问是否打包或发布。
 
